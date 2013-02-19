@@ -27,13 +27,15 @@ function taCount(visCnt)
 <b>____ESSAY_TYPE____</b><br>
 <font>
 <table><tr><td>
-<FORM action="http://mslongsenglishii.pythonanywhere.com/essay_submission" method="post">
+<FORM action="http://anamcdonald.pythonanywhere.com/essay_submission" method="post">
     <p>
     First name: <INPUT type="text" name="firstname"><BR>
     Last name: <INPUT type="text" name="lastname"><BR>
     Period: <select name="period">
         <option value="1st">1st</option>
+        <option value="2nd">2nd</option>
         <option value="3rd">3rd</option>
+        <option value="4th">4th</option>
         <option value="6th">6th</option>
         <option value="7th">7th</option>
         <option value="8th">8th</option>
