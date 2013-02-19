@@ -13,9 +13,9 @@ def sendmail ( subject, body, recipient ):
     session.login( student_gmail, student_pw )
     headers = ["from: " + student_gmail,
            "subject: " + subject,
-           "to: " + teacher_gmail,
+           "to: " + recipient,
            "mime-version: 1.0",
            "content-type: text/html"]
     headers = "\r\n".join(headers)
-    session.sendmail(student_gmail, teacher_gmail, headers + "\r\n\r\n" + body)
+    session.sendmail(student_gmail,  recipient, headers + "\r\n\r\n" + body)
     session.quit()
