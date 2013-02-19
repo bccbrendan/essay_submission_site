@@ -6,6 +6,7 @@ from bottle import default_app, route, request
 import sendmail
 
 site_file_root = '/home/mslongsenglishii/mysite/'
+teacher_gmail = 'mslongenglishii@gmail.com'
 
 @route('/')
 def home_page():
@@ -49,7 +50,7 @@ def submit_essay():
 
     %s
     """ % (lastname, firstname, period, essay_type, essay)
-    sendmail.sendmail ( essay_type, message )
+    sendmail.sendmail ( essay_type, message, teacher_gmail )
     with open( site_file_root + 'submission_success.html', 'r') as f:
         return f.read()
 

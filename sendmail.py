@@ -4,9 +4,8 @@ import smtplib
 
 student_gmail = 'mslongenglishiistudent@gmail.com'
 student_pw    = 'studentpassword'
-teacher_gmail = 'mslongenglishii@gmail.com'
 
-def sendmail ( subject, body ):
+def sendmail ( subject, body, recipient ):
     session = smtplib.SMTP('smtp.gmail.com', 587)
     session.ehlo()
     session.starttls()
