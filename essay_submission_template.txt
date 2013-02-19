@@ -1,0 +1,54 @@
+<HTML>
+<HEAD>
+<script language = "Javascript">
+
+function taLimit()
+{
+    var taObj=event.srcElement;
+    if (taObj.value.length==taObj.maxLength*1) return false;
+}
+
+function taCount(visCnt)
+{
+    var taObj=event.srcElement;
+    if (taObj.value.length>taObj.maxLength*1) taObj.value=taObj.value.substring(0,taObj.maxLength*1);
+    if (visCnt) visCnt.innerText=taObj.maxLength-taObj.value.length;
+}
+</script>
+</HEAD>
+
+<BODY>
+<a href="/literary_essay">Literary Essay</a>&nbsp&nbsp
+<a href="/expository_essay">Expository Essay</a>&nbsp&nbsp
+<a href="/persuasive_essay">Persuasive Essay</a>&nbsp&nbsp
+<a href="/single_selection_oer">Single Selection OER</a>&nbsp&nbsp
+<a href="/crossover_oer">Crossover OER</a>&nbsp&nbsp
+<br><br>
+<b>____ESSAY_TYPE____</b><br>
+<font>
+<table><tr><td>
+<FORM action="http://bccbrendan.pythonanywhere.com/essay_submission" method="post">
+    <p>
+    First name: <INPUT type="text" name="firstname"><BR>
+    Last name: <INPUT type="text" name="lastname"><BR>
+    Period: <select name="period">
+        <option value="1st">1st</option>
+        <option value="3rd">3rd</option>
+        <option value="6th">6th</option>
+        <option value="7th">7th</option>
+        <option value="8th">8th</option>
+    </select><br>
+
+    <TEXTAREA onkeypress="return taLimit()" onkeyup="return taCount(myCounter)"
+    name=essay rows=25 wrap=physical cols=70 maxLength="____LEN____" name="essay"
+    spellcheck="false"></TEXTAREA><br>
+    Characters left : <B><SPAN id=myCounter>____LEN____</SPAN></B>
+    <INPUT type="hidden" name="essay_type" value="____ESSAY_TYPE____">
+    <INPUT type="submit" value="Send"> <INPUT type="reset">
+    </p>
+</FORM>
+</td><td valign="Top">
+</table>
+</font>
+</BODY>
+</HTML>
