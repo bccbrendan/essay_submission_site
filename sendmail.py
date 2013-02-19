@@ -2,8 +2,8 @@
 # email stacia's work email from a student
 import smtplib
 
-student_gmail = 'mslongenglishiistudent@gmail.com'
-student_pw    = 'studentpassword'
+student_gmail = 'del.valle.english.student@gmail.com'
+student_pw    = 'cardinalgoldtooth'
 
 def sendmail ( subject, body, recipient ):
     session = smtplib.SMTP('smtp.gmail.com', 587)
