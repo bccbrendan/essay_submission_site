@@ -15,11 +15,11 @@ def home_page():
 
 @route('/literary_essay')
 def literary_essary_form():
-    return instantiate_page_template ( 'Literary Essay', 1734 )
+    return instantiate_page_template ( 'Literary Essay', 1750 )
 
 @route('/expository_essay')
 def expository_essay_form():
-    return instantiate_page_template ( 'Expository Essay', 1734 )
+    return instantiate_page_template ( 'Expository Essay', 1750 )
 
 @route('/persuasive_essay')
 def persuasive_essay_form():
@@ -27,11 +27,11 @@ def persuasive_essay_form():
 
 @route('/single_selection_oer')
 def single_selection_oer_form():
-    return instantiate_page_template ( 'Single Selection OER', 1734 )
+    return instantiate_page_template ( 'Single Selection OER', 675 )
 
 @route('/crossover_oer')
 def crossover_oer_form():
-    return instantiate_page_template ( 'Crossover OER', 1734 )
+    return instantiate_page_template ( 'Crossover OER', 675 )
 
 
 @route('/essay_submission', method='POST')
