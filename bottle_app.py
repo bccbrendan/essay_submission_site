@@ -53,11 +53,12 @@ def submit_essay():
     """ % (lastname, firstname, period, essay_type, essay)
     try:
         sendmail.sendmail ( essay_type, message, teacher_gmail )
-    except:
-        return print_error_page ( essay )
+    except Exception, e:
+        return print_error_page ( essay, str(e) )
     else:
         with open( site_file_root + 'submission_success.html', 'r') as f:
             return f.read()
+
 
 
 def instantiate_page_template ( essay_type, character_limit ):
@@ -68,7 +69,7 @@ def instantiate_page_template ( essay_type, character_limit ):
 
     return page2.replace( '____ESSAY_TYPE____', essay_type )
 
-def print_error_page ( essay_text ):
+def print_error_page ( essay_text, exception_message ):
     page = """\
     <HTML>
     <HEAD>
@@ -84,7 +85,8 @@ def print_error_page ( essay_text ):
     <b>Please copy your essay below, and paste it into Microsoft Word.</b><br>
     <b>After that, call your teacher over.</b><br>
     <TEXTAREA name=essay rows=25 wrap=physical cols=70 name="essay"
-    spellcheck="false">""" + essay_text + "</TEXTAREA><br>"
+    spellcheck="false">""" + essay_text + "</TEXTAREA><br>" + exception_message +
+    "</BODY></HTML>"
     return page
 
 
