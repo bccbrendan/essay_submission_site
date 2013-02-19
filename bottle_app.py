@@ -5,7 +5,8 @@
 from bottle import default_app, route, request
 import sendmail
 
-site_file_root = '/home/mslongsenglishii/mysite/'
+python_anywhere_user = 'mslongsenglishii'
+site_file_root = '/home/' + python_anywhere_user + '/mysite/'
 teacher_gmail = 'mslongenglishii@gmail.com'
 
 @route('/')
@@ -54,7 +55,7 @@ def submit_essay():
         sendmail.sendmail ( essay_type, message, teacher_gmail )
     except:
         return print_error_page ( essay )
-    else:        
+    else:
         with open( site_file_root + 'submission_success.html', 'r') as f:
             return f.read()
 
@@ -63,8 +64,10 @@ def instantiate_page_template ( essay_type, character_limit ):
     with open( site_file_root + 'essay_submission_template.txt', 'r') as f:
         page = f.read()
     page1 = page.replace( '____LEN____', str(character_limit) )
-    return page1.replace( '____ESSAY_TYPE____', essay_type )
-    
+    page2 = page1.replace( '____PYTHON_ANYWHERE_USER____', python_anywhere_user )
+
+    return page2.replace( '____ESSAY_TYPE____', essay_type )
+
 def print_error_page ( essay_text ):
     page = """\
     <HTML>
@@ -82,6 +85,7 @@ def print_error_page ( essay_text ):
     <b>After that, call your teacher over.</b><br>
     <TEXTAREA name=essay rows=25 wrap=physical cols=70 name="essay"
     spellcheck="false">""" + essay_text + "</TEXTAREA><br>"
+    return page
 
 
 
