@@ -50,9 +50,13 @@ def submit_essay():
 
     %s
     """ % (lastname, firstname, period, essay_type, essay)
-    sendmail.sendmail ( essay_type, message, teacher_gmail )
-    with open( site_file_root + 'submission_success.html', 'r') as f:
-        return f.read()
+    try:
+        sendmail.sendmail ( essay_type, message, teacher_gmail )
+    except:
+        return print_error_page ( essay )
+    else:        
+        with open( site_file_root + 'submission_success.html', 'r') as f:
+            return f.read()
 
 
 def instantiate_page_template ( essay_type, character_limit ):
@@ -60,5 +64,25 @@ def instantiate_page_template ( essay_type, character_limit ):
         page = f.read()
     page1 = page.replace( '____LEN____', str(character_limit) )
     return page1.replace( '____ESSAY_TYPE____', essay_type )
+    
+def print_error_page ( essay_text ):
+    page = """\
+    <HTML>
+    <HEAD>
+    </HEAD>
+    <BODY>
+    <a href="/literary_essay">Literary Essay</a>&nbsp&nbsp
+    <a href="/expository_essay">Expository Essay</a>&nbsp&nbsp
+    <a href="/persuasive_essay">Persuasive Essay</a>&nbsp&nbsp
+    <a href="/single_selection_oer">Single Selection OER</a>&nbsp&nbsp
+    <a href="/crossover_oer">Crossover OER</a>&nbsp&nbsp
+    <br><br>
+    <b>An error occured while submitting your essay.</b><br>
+    <b>Please copy your essay below, and paste it into Microsoft Word.</b><br>
+    <b>After that, call your teacher over.</b><br>
+    <TEXTAREA name=essay rows=25 wrap=physical cols=70 name="essay"
+    spellcheck="false">""" + essay_text + "</TEXTAREA><br>"
+
+
 
 application = default_app()
