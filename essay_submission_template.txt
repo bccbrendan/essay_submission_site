@@ -27,7 +27,7 @@ function taCount(visCnt)
 <b>____ESSAY_TYPE____</b><br>
 <font>
 <table><tr><td>
-<FORM action="http://bccbrendan.pythonanywhere.com/essay_submission" method="post">
+<FORM action="http://mslongsenglishii.pythonanywhere.com/essay_submission" method="post">
     <p>
     First name: <INPUT type="text" name="firstname"><BR>
     Last name: <INPUT type="text" name="lastname"><BR>
