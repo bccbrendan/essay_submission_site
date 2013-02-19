@@ -4,9 +4,6 @@ to their teachers.
 
 To set up this webserver on your account, you'll need to change the following:
 * In 'bottle_app.py' replace
-    - site_file_root = '/home/<yournamehere>/mysite/'
+    - python_anywhere_user = <your python_anywhere username.'
     - teacher_gmail = 'email address where submissions end up'
-* In 'essay_submission_template.txt'
-    - replace the form submission action url
-      with that of your site.
 
