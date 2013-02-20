@@ -85,8 +85,7 @@ def print_error_page ( essay_text, exception_message ):
     <b>Please copy your essay below, and paste it into Microsoft Word.</b><br>
     <b>After that, call your teacher over.</b><br>
     <TEXTAREA name=essay rows=25 wrap=physical cols=70 name="essay"
-    spellcheck="false">""" + essay_text + "</TEXTAREA><br>" + exception_message +
-    "</BODY></HTML>"
+    spellcheck="false">""" + essay_text + "</TEXTAREA><br>" + exception_message + "</BODY></HTML>"
     return page
 
 
