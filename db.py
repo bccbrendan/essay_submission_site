@@ -94,7 +94,7 @@ class EssaySubmission:
         <p>Essay Type: %s</p>
 
         %s
-        """ % (self.lname, self.fname, self.perios, self.essay_title, self.essay_body)
+        """ % (self.lname, self.fname, self.period, self.essay_title, self.essay_body)
         return message
 
 def SubmissionFromDBRow( db_row ):
