@@ -50,13 +50,15 @@ def submit_essay():
 
     submission = db.EssaySubmission( -1, submit_time, lastname, firstname, period, essay_type, essay, False)
 
-    # try to email
+    """
+    # try to email -- disabled
     try:
         sendmail.sendmail ( submission.essay_title, submission.GetEmailString(), siteconfig.teacher_gmail )
     except Exception:
         submission.email_success = False
     else:
         submission.email_success = True
+    """
 
     # log submission in database
     db.add_row ( submission, siteconfig.database )
