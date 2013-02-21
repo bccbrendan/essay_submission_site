@@ -14,27 +14,27 @@ def home_page():
         return f.read()
 
 @route('/literary_essay')
-@view ( siteconfig.site_file_root + 'essay_submission')
+@view ( siteconfig.site_file_root + 'essay_submission.tpl')
 def literary_essay_form ():
     return dict(essay_title='Literary Essay', char_len='1750', site_url=siteconfig.site_url)
 
 @route('/expository_essay')
-@view ( siteconfig.site_file_root + 'essay_submission')
+@view ( siteconfig.site_file_root + 'essay_submission.tpl')
 def expository_essay_form():
     return dict(essay_title='Expository Essay', char_len='1750', site_url=siteconfig.site_url)
 
 @route('/persuasive_essay')
-@view (siteconfig.site_file_root + 'essay_submission')
+@view (siteconfig.site_file_root + 'essay_submission.tpl')
 def persuasive_essay_form():
     return dict(essay_title='Persuasive Essay', char_len='1750', site_url=siteconfig.site_url)
 
 @route('/single_selection_oer')
-@view (siteconfig.site_file_root + 'essay_submission')
+@view (siteconfig.site_file_root + 'essay_submission.tpl')
 def single_selection_oer_form():
     return dict(essay_title='Single Selection OER', char_len='675', site_url=siteconfig.site_url)
 
 @route('/crossover_oer')
-@view (siteconfig.site_file_root + 'essay_submission')
+@view (siteconfig.site_file_root + 'essay_submission.tpl')
 def crossover_oer_form():
     return dict(essay_title='Crossover OER', char_len='675', site_url=siteconfig.site_url)
 
@@ -66,14 +66,14 @@ def submit_essay():
         return f.read()
 
 @route('/view_submissions')
-@view(siteconfig.site_file_root + 'view_submissions')
+@view(siteconfig.site_file_root + 'view_submissions.tpl')
 def view_submissions():
     rows = db.get_all_rows(siteconfig.database)
     html_rows = '\n'.join( [ row.GetHTMLTableString('/view_essay') for row in rows ] )
     return dict ( entries=html_rows, site_url=siteconfig.site_url )
     
 @route('/view_essay')
-@view(siteconfig.site_file_root + 'view_essay')
+@view(siteconfig.site_file_root + 'view_essay.tpl')
 def view_essay():
     id = int(request.GET.get("id"))
     row = db.get_row ( id, siteconfig.database )
