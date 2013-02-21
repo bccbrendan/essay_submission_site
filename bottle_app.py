@@ -2,16 +2,13 @@
 # purpose: Basic webserver to help students practice writing + submitting essays
 # brendan long Feb 17 2013
 
-from bottle import default_app, route, request
+from bottle import default_app, route, request, run
 import sendmail
-
-python_anywhere_user = 'mslongsenglishii'
-site_file_root = '/home/' + python_anywhere_user + '/mysite/'
-teacher_gmail = 'mslongenglishii@gmail.com'
+import siteconfig
 
 @route('/')
 def home_page():
-    with open( site_file_root + 'index.html', 'r') as f:
+    with open( siteconfig.site_file_root + 'index.html', 'r') as f:
         return f.read()
 
 @route('/literary_essay')
@@ -52,20 +49,20 @@ def submit_essay():
     %s
     """ % (lastname, firstname, period, essay_type, essay)
     try:
-        sendmail.sendmail ( essay_type, message, teacher_gmail )
+        sendmail.sendmail ( essay_type, message, siteconfig.teacher_gmail )
     except Exception, e:
         return print_error_page ( essay, str(e) )
     else:
-        with open( site_file_root + 'submission_success.html', 'r') as f:
+        with open( siteconfig.site_file_root + 'submission_success.html', 'r') as f:
             return f.read()
 
 
 
 def instantiate_page_template ( essay_type, character_limit ):
-    with open( site_file_root + 'essay_submission_template.txt', 'r') as f:
+    with open( siteconfig.site_file_root + 'essay_submission_template.txt', 'r') as f:
         page = f.read()
     page1 = page.replace( '____LEN____', str(character_limit) )
-    page2 = page1.replace( '____PYTHON_ANYWHERE_USER____', python_anywhere_user )
+    page2 = page1.replace( '____PYTHON_ANYWHERE_USER____', siteconfig.python_anywhere_user )
 
     return page2.replace( '____ESSAY_TYPE____', essay_type )
 
@@ -89,5 +86,7 @@ def print_error_page ( essay_text, exception_message ):
     return page
 
 
-
-application = default_app()
+if siteconfig.standalone:
+    run(host='localhost', port=8080, debug=True)
+else:
+    application = default_app()
