@@ -2,9 +2,11 @@
 # purpose: Basic webserver to help students practice writing + submitting essays
 # brendan long Feb 17 2013
 
-from bottle import default_app, route, request, run, view
+from bottle import default_app, route, request, run, view, redirect
 import sendmail
+import db
 import siteconfig
+from datetime import datetime
 
 @route('/')
 def home_page():
@@ -39,29 +41,50 @@ def crossover_oer_form():
 
 @route('/essay_submission', method='POST')
 def submit_essay():
-    print "Serving essay_submission"
+    submit_time = datetime.now().strftime("%Y-%m-%d %I:%M%p")
     lastname = request.forms.get('lastname')
     firstname    = request.forms.get('firstname')
     period = request.forms.get('period')
     essay_type = request.forms.get('essay_type')
     essay    = request.forms.get('essay')
 
-    message = """\
-    <p>Last Name: %s</p>
-    <p>First Name: %s</p>
-    <p>Period: %s</p>
-    <p>Essay Type: %s</p>
+    submission = db.EssaySubmission( -1, submit_time, lastname, firstname, period, essay_type, essay, False)
 
-    %s
-    """ % (lastname, firstname, period, essay_type, essay)
+    # try to email
     try:
-        sendmail.sendmail ( essay_type, message, siteconfig.teacher_gmail )
-    except Exception, e:
-        return print_error_page ( essay, str(e) )
+        sendmail.sendmail ( submission.essay_title, submission.GetEmailString(), siteconfig.teacher_gmail )
+    except Exception:
+        submission.email_success = False
     else:
-        with open( siteconfig.site_file_root + 'submission_success.html', 'r') as f:
-            return f.read()
+        submission.email_success = True
 
+    # log submission in database
+    db.add_row ( submission )
+ 
+
+    with open( siteconfig.site_file_root + 'submission_success.html', 'r') as f:
+        return f.read()
+
+@route('/view_submissions')
+@view('view_submissions')
+def view_submissions():
+    rows = db.get_all_rows()
+    html_rows = '\n'.join( [ row.GetHTMLTableString('/view_essay') for row in rows ] )
+    return dict ( entries=html_rows, site_url=siteconfig.site_url )
+    
+@route('/view_essay')
+@view('view_essay')
+def view_essay():
+    id = int(request.GET.get("id"))
+    row = db.get_row ( id )
+    return dict ( text = row.GetHTMLTextAreaString() )
+
+
+@route('/delete_submissions', method='POST')
+def delete_submissions():
+    db.delete_all ( )
+    redirect('/view_submissions')
+ 
 def print_error_page ( essay_text, exception_message ):
     page = """\
     <HTML>
