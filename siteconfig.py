@@ -2,11 +2,11 @@
 # purpose: stores all of the values that change between teachers' sites
 # brendan long Feb 17 2013
 
-python_anywhere_user = 'bccbrendan'
-teacher_gmail = 'bccbrendan@gmail.com'
+python_anywhere_user = xxxx # e.g. 'bccbrendan'
+teacher_gmail = xxxx # e.g. 'bccbrendan@gmail.com'
 
 # should be False for pythonanywherehosting and True for localhost
-standalone = True 
+standalone = False 
 
 # these just depend on the values above
 if standalone:
