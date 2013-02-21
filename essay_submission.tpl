@@ -1,3 +1,9 @@
+<!-- submission template form
+     bottle template variables:
+         essay_title - e.g. 'Literary Essay'
+         char_len    - max essay length
+         site_url    - the root url for this website
+-->
 <HTML>
 <HEAD>
 <script language = "Javascript">
@@ -24,10 +30,10 @@ function taCount(visCnt)
 <a href="/single_selection_oer">Single Selection OER</a>&nbsp&nbsp
 <a href="/crossover_oer">Crossover OER</a>&nbsp&nbsp
 <br><br>
-<b>____ESSAY_TYPE____</b><br>
+<b>{{essay_title}}</b><br>
 <font>
 <table><tr><td>
-<FORM action="http://____PYTHON_ANYWHERE_USER____.pythonanywhere.com/essay_submission" method="post">
+<FORM action="{{site_url}}/essay_submission" method="post">
     <p>
     First name: <INPUT type="text" name="firstname"><BR>
     Last name: <INPUT type="text" name="lastname"><BR>
@@ -42,10 +48,10 @@ function taCount(visCnt)
     </select><br>
 
     <TEXTAREA onkeypress="return taLimit()" onkeyup="return taCount(myCounter)"
-    name=essay rows=25 wrap=physical cols=70 maxLength="____LEN____" name="essay"
+    name=essay rows=25 wrap=physical cols=70 maxLength="{{char_len}}" name="essay"
     spellcheck="false"></TEXTAREA><br>
-    Characters left : <B><SPAN id=myCounter>____LEN____</SPAN></B>
-    <INPUT type="hidden" name="essay_type" value="____ESSAY_TYPE____">
+    Characters left : <B><SPAN id=myCounter>{{char_len}}</SPAN></B>
+    <INPUT type="hidden" name="essay_type" value="{{essay_title}}">
     <INPUT type="submit" value="Send"> <INPUT type="reset">
     </p>
 </FORM>

@@ -2,7 +2,7 @@
 # purpose: Basic webserver to help students practice writing + submitting essays
 # brendan long Feb 17 2013
 
-from bottle import default_app, route, request, run
+from bottle import default_app, route, request, run, view
 import sendmail
 import siteconfig
 
@@ -12,28 +12,34 @@ def home_page():
         return f.read()
 
 @route('/literary_essay')
-def literary_essary_form():
-    return instantiate_page_template ( 'Literary Essay', 1750 )
+@view ('essay_submission')
+def literary_essay_form ():
+    return dict(essay_title='Literary Essay', char_len='1750', site_url=siteconfig.site_url)
 
 @route('/expository_essay')
+@view ('essay_submission')
 def expository_essay_form():
-    return instantiate_page_template ( 'Expository Essay', 1750 )
+    return dict(essay_title='Expository Essay', char_len='1750', site_url=siteconfig.site_url)
 
 @route('/persuasive_essay')
+@view ('essay_submission')
 def persuasive_essay_form():
-    return instantiate_page_template ( 'Persuasive Essay', 1750 )
+    return dict(essay_title='Persuasive Essay', char_len='1750', site_url=siteconfig.site_url)
 
 @route('/single_selection_oer')
+@view ('essay_submission')
 def single_selection_oer_form():
-    return instantiate_page_template ( 'Single Selection OER', 675 )
+    return dict(essay_title='Single Selection OER', char_len='675', site_url=siteconfig.site_url)
 
 @route('/crossover_oer')
+@view ('essay_submission')
 def crossover_oer_form():
-    return instantiate_page_template ( 'Crossover OER', 675 )
+    return dict(essay_title='Crossover OER', char_len='675', site_url=siteconfig.site_url)
 
 
 @route('/essay_submission', method='POST')
 def submit_essay():
+    print "Serving essay_submission"
     lastname = request.forms.get('lastname')
     firstname    = request.forms.get('firstname')
     period = request.forms.get('period')
@@ -55,16 +61,6 @@ def submit_essay():
     else:
         with open( siteconfig.site_file_root + 'submission_success.html', 'r') as f:
             return f.read()
-
-
-
-def instantiate_page_template ( essay_type, character_limit ):
-    with open( siteconfig.site_file_root + 'essay_submission_template.txt', 'r') as f:
-        page = f.read()
-    page1 = page.replace( '____LEN____', str(character_limit) )
-    page2 = page1.replace( '____PYTHON_ANYWHERE_USER____', siteconfig.python_anywhere_user )
-
-    return page2.replace( '____ESSAY_TYPE____', essay_type )
 
 def print_error_page ( essay_text, exception_message ):
     page = """\
