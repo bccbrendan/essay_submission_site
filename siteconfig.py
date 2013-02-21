@@ -16,4 +16,6 @@ else:
     site_file_root = '/home/' + python_anywhere_user + '/mysite/'
     site_url = 'http://' + python_anywhere_user + '.pythonanywhere.com/'
 
+database = site_file_root + "essays.db"
+
 

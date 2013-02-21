@@ -14,27 +14,27 @@ def home_page():
         return f.read()
 
 @route('/literary_essay')
-@view ('essay_submission')
+@view ( siteconfig.site_file_root + 'essay_submission')
 def literary_essay_form ():
     return dict(essay_title='Literary Essay', char_len='1750', site_url=siteconfig.site_url)
 
 @route('/expository_essay')
-@view ('essay_submission')
+@view ( siteconfig.site_file_root + 'essay_submission')
 def expository_essay_form():
     return dict(essay_title='Expository Essay', char_len='1750', site_url=siteconfig.site_url)
 
 @route('/persuasive_essay')
-@view ('essay_submission')
+@view (siteconfig.site_file_root + 'essay_submission')
 def persuasive_essay_form():
     return dict(essay_title='Persuasive Essay', char_len='1750', site_url=siteconfig.site_url)
 
 @route('/single_selection_oer')
-@view ('essay_submission')
+@view (siteconfig.site_file_root + 'essay_submission')
 def single_selection_oer_form():
     return dict(essay_title='Single Selection OER', char_len='675', site_url=siteconfig.site_url)
 
 @route('/crossover_oer')
-@view ('essay_submission')
+@view (siteconfig.site_file_root + 'essay_submission')
 def crossover_oer_form():
     return dict(essay_title='Crossover OER', char_len='675', site_url=siteconfig.site_url)
 
@@ -59,30 +59,30 @@ def submit_essay():
         submission.email_success = True
 
     # log submission in database
-    db.add_row ( submission )
+    db.add_row ( submission, siteconfig.database )
  
 
     with open( siteconfig.site_file_root + 'submission_success.html', 'r') as f:
         return f.read()
 
 @route('/view_submissions')
-@view('view_submissions')
+@view(siteconfig.site_file_root + 'view_submissions')
 def view_submissions():
-    rows = db.get_all_rows()
+    rows = db.get_all_rows(siteconfig.database)
     html_rows = '\n'.join( [ row.GetHTMLTableString('/view_essay') for row in rows ] )
     return dict ( entries=html_rows, site_url=siteconfig.site_url )
     
 @route('/view_essay')
-@view('view_essay')
+@view(siteconfig.site_file_root + 'view_essay')
 def view_essay():
     id = int(request.GET.get("id"))
-    row = db.get_row ( id )
+    row = db.get_row ( id, siteconfig.database )
     return dict ( text = row.GetHTMLTextAreaString() )
 
 
 @route('/delete_submissions', method='POST')
 def delete_submissions():
-    db.delete_all ( )
+    db.delete_all ( siteconfig.database )
     redirect('/view_submissions')
  
 def print_error_page ( essay_text, exception_message ):

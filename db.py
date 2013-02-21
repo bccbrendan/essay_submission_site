@@ -1,6 +1,5 @@
 import sqlite3
 
-database_file = 'essays.db'
 table_name = 'essays'
 
 create_table_statement = "CREATE TABLE " + table_name + \
@@ -111,31 +110,31 @@ def SubmissionFromDBRow( db_row ):
      
  
  
-def init_db ( ):
+def init_db (database_file ):
     con = sqlite3.connect(database_file)
     con.execute(create_table_statement)
     con.commit()
 
-def add_row ( essay_row ):
+def add_row ( essay_row, database_file ):
     con = sqlite3.connect( database_file )
     con.execute(essay_row.GetINSERTStatement())
     con.commit()
 
-def get_row ( id ):
-    should_be_len_1 =  get_rows ( "SELECT * FROM " + table_name + " WHERE ID = " + str(id) )
+def get_row ( id, database_file ):
+    should_be_len_1 =  get_rows ( "SELECT * FROM " + table_name + " WHERE ID = " + str(id), database_file )
     return should_be_len_1[0]
 
-def get_all_rows ( ):
-    return get_rows ( "SELECT * FROM " + table_name + " ORDER BY time DESC")
+def get_all_rows ( database_file ):
+    return get_rows ( "SELECT * FROM " + table_name + " ORDER BY time DESC", database_file)
 
-def get_rows ( sql_statement ):
+def get_rows ( sql_statement, database_file ):
     con = sqlite3.connect( database_file )
     cursor = con.cursor()
     cursor.execute( sql_statement )
     results = cursor.fetchall()
     return [ SubmissionFromDBRow(row) for row in results ]
 
-def delete_rows ( row_ids ):
+def delete_rows ( row_ids, database_file ):
     if len(row_ids) == 0:
         return
     statement = "DELETE FROM " + table_name + " WHERE " + \
@@ -144,7 +143,7 @@ def delete_rows ( row_ids ):
     con.execute( statement )
     con.commit()
 
-def delete_all ( ):
+def delete_all (database_file ):
     statement = "DELETE FROM " + table_name
     con = sqlite3.connect( database_file )
     con.execute( statement )
