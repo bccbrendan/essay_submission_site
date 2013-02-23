@@ -6,5 +6,8 @@
 <HEAD> 
 </HEAD> 
 <BODY> 
-{{!text}}
+<TEXTAREA rows=40 wrap=physical cols=70>
+{{text}}
+</TEXTAREA>
 </BODY>
+

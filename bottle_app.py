@@ -16,8 +16,7 @@ def home_page():
 @route('/literary_essay')
 @view ( siteconfig.site_file_root + 'essay_submission.tpl')
 def literary_essay_form ():
-    return dict(essay_title='Literary Essay', char_len='1750', site_url=siteconfig.site_url)
-
+    return dict(essay_title='Literary Essay', char_len='1750', site_url=siteconfig.site_url)vim
 @route('/expository_essay')
 @view ( siteconfig.site_file_root + 'essay_submission.tpl')
 def expository_essay_form():

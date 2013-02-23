@@ -1,4 +1,5 @@
 import sqlite3
+import cgi
 
 table_name = 'essays'
 
@@ -36,25 +37,6 @@ class EssaySubmission:
         self.essay_body = essay_body
         self.email_success = email_success
 
-    def GetINSERTStatement (self):
-        tokens = []
-        tokens.append ( "INSERT INTO " )
-        tokens.append ( table_name )
-        tokens.append ( "( time, lname, fname, period, essay_title, " )
-        tokens.append (   "essay_body, email_success) VALUES (" )
-        tokens.append ( "\'" + str(self.time)   + "\', " )
-        tokens.append ( "\'" + self.lname       + "\', " )
-        tokens.append ( "\'" + self.fname       + "\', " )
-        tokens.append ( "\'" + self.period      + "\', " )
-        tokens.append ( "\'" + self.essay_title + "\', " )
-        tokens.append ( "\'" + self.essay_body  + "\', " )
-        if self.email_success :
-            tokens.append ('1')
-        else:
-            tokens.append ('0')
-        tokens.append(")")
-        return ''.join(tokens)
-
     def GetHTMLTableString (self, view_body_url):
         submission_get_url = view_body_url + "?id=" + str(self.key)
         body_link = "<a href=\"" + submission_get_url + "\">" + self.essay_title + "</a>"
@@ -65,9 +47,9 @@ class EssaySubmission:
         tokens = []
         tokens.append ( "<tr>" )
         # TODO  tokens.append ( "<td>"+checkbox input]</td>
-        tokens.append ( "<td>" + str(self.time)  + "</td>" )
-        tokens.append ( "<td>" + self.lname + "</td>" )
-        tokens.append ( "<td>" + self.fname + "</td>" )
+        tokens.append ( "<td>" + cgi.escape(str(self.time))  + "</td>" )
+        tokens.append ( "<td>" + cgi.escape(self.lname) + "</td>" )
+        tokens.append ( "<td>" + cgi.escape(self.fname) + "</td>" )
         tokens.append ( "<td>" + self.period+ "</td>" )
         tokens.append ( "<td>" + body_link  + "</td>" )
         tokens.append ( "<td>" + emailed    + "</td>")
@@ -76,13 +58,11 @@ class EssaySubmission:
 
     def GetHTMLTextAreaString(self):
         tokens = []
-        tokens.append ( "<TEXTAREA rows=40 wrap=physical cols=70>" )
         tokens.append ( self.lname + ", " + self.fname + "\n")
         tokens.append ( self.period + " Period\n" )
         tokens.append ( "Submitted " + str(self.time) + "\n")
         tokens.append ( self.essay_title + "\n\n")
         tokens.append ( self.essay_body )
-        tokens.append ( "</TEXTAREA>")
         return ''.join( tokens )
     
     def GetEmailString(self):
@@ -106,18 +86,21 @@ def SubmissionFromDBRow( db_row ):
             db_row[5],
             db_row[6],
             db_row[7] == 1)
-
-     
- 
  
 def init_db (database_file ):
     con = sqlite3.connect(database_file)
     con.execute(create_table_statement)
     con.commit()
 
-def add_row ( essay_row, database_file ):
+def add_row ( row, database_file ):
     con = sqlite3.connect( database_file )
-    con.execute(essay_row.GetINSERTStatement())
+    con.execute('INSERT INTO ' + table_name + 
+                    '( time, lname, fname, period, essay_title, ' +
+                    'essay_body, email_success) ' +
+                    'VALUES (?, ?, ?, ?, ?, ?, ?)',
+                ( str(row.time), row.lname, row.fname, row.period, 
+                  row.essay_title, row.essay_body,
+                  '1' if row.email_success else '0') )
     con.commit()
 
 def get_row ( id, database_file ):
